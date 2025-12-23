@@ -12,14 +12,14 @@ This application was developed by Bella Solutions for Dr. Shawn's pet clinic to 
 - **Pet Registration**: Manage pet information including breed, type, and medical history
 - **Consultation Tracking**: Record and track consultation details and fees
 - **RESTful API**: Comprehensive REST endpoints for all operations
-- **Database Integration**: Support for both H2 (development) and MySQL (production)
+- **Database Integration**: MySQL database with persistent storage
 - **Health Monitoring**: Built-in health checks and monitoring endpoints
 - **Containerized Deployment**: Docker-based deployment with Docker Compose support
 
 ## 🛠️ Technology Stack
 
 - **Backend**: Spring Boot 2.7.14, Java 11
-- **Database**: H2 (development), MySQL 8.0 (production)
+- **Database**: MySQL 8.0
 - **Build Tool**: Maven 3.8+
 - **Containerization**: Docker & Docker Compose
 - **CI/CD**: Jenkins Pipeline
@@ -30,7 +30,8 @@ This application was developed by Bella Solutions for Dr. Shawn's pet clinic to 
 
 - Java 11 or higher
 - Maven 3.8+
-- Docker & Docker Compose
+- MySQL 8.0 or higher
+- Docker & Docker Compose (optional)
 - AWS Account (for cloud deployment)
 - Jenkins (for CI/CD)
 
@@ -44,20 +45,42 @@ git clone <your-repository-url>
 cd pet-clinic
 ```
 
-2. **Build the application**
+2. **Setup MySQL Database**
+```bash
+# Create database
+mysql -u root -p
+CREATE DATABASE petclinicdb;
+CREATE USER 'petclinic'@'localhost' IDENTIFIED BY 'petclinic123';
+GRANT ALL PRIVILEGES ON petclinicdb.* TO 'petclinic'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+Or use Docker to run MySQL:
+```bash
+docker run -d \
+  --name pet-clinic-mysql \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=petclinicdb \
+  -e MYSQL_USER=petclinic \
+  -e MYSQL_PASSWORD=petclinic123 \
+  -p 3306:3306 \
+  mysql:8.0
+```
+
+3. **Build the application**
 ```bash
 mvn clean package
 ```
 
-3. **Run locally**
+4. **Run locally**
 ```bash
 java -jar target/pet-clinic-1.0.0.jar
 ```
 
-4. **Access the application**
-- Application: http://localhost:8080/pet-clinic
-- Health Check: http://localhost:8080/pet-clinic/actuator/health
-- H2 Console: http://localhost:8080/pet-clinic/h2-console
+5. **Access the application**
+- Application: http://localhost:8081/pet-clinic
+- Health Check: http://localhost:8081/pet-clinic/actuator/health
 
 ### Docker Deployment
 
@@ -164,23 +187,31 @@ chmod +x ec2-setup.sh
 
 ### Database Configuration
 
-**Development (H2):**
-```properties
-spring.datasource.url=jdbc:h2:mem:petclinicdb
-spring.datasource.driver-class-name=org.h2.Driver
-```
+The application uses MySQL by default. Configure via environment variables:
 
-**Production (MySQL):**
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/petclinicdb
+spring.datasource.url=jdbc:mysql://localhost:3306/petclinicdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 spring.datasource.username=petclinic
 spring.datasource.password=petclinic123
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ```
 
 ### Environment Variables
 
+You can override the default database settings using these environment variables:
+- `MYSQL_URL`: Database connection URL (default: jdbc:mysql://localhost:3306/petclinicdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true)
+- `MYSQL_USER`: Database username (default: petclinic)
+- `MYSQL_PASSWORD`: Database password (default: petclinic123)
 - `SPRING_PROFILES_ACTIVE`: Set to `prod` for production
 - `JAVA_OPTS`: JVM options (e.g., `-Xms512m -Xmx1024m`)
+
+**Example:**
+```bash
+export MYSQL_URL=jdbc:mysql://your-server:3306/petclinicdb
+export MYSQL_USER=your_username
+export MYSQL_PASSWORD=your_password
+java -jar target/pet-clinic-1.0.0.jar
+```
 
 ## 🧪 Testing
 
@@ -230,10 +261,15 @@ The application includes sample data for:
 
 ### Common Issues
 
-1. **Port conflicts**: Ensure ports 8080, 8081 are available
+1. **Port conflicts**: Ensure port 8081 is available
 2. **Memory issues**: Increase JVM heap size with `-Xmx`
-3. **Database connection**: Verify MySQL service and credentials
+3. **Database connection**: 
+   - Verify MySQL service is running: `sudo systemctl status mysql` or `brew services list | grep mysql`
+   - Check database credentials in application.properties
+   - Ensure the database `petclinicdb` exists
+   - Verify network connectivity to MySQL server
 4. **Docker permissions**: Add user to docker group
+5. **MySQL connection errors**: If you see "Access denied" errors, verify the user has proper privileges
 
 ### Logs
 

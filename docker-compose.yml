@@ -3,35 +3,48 @@ version: '3.8'
 services:
   pet-clinic:
     build: .
+    container_name: pet-clinic-app
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/petclinic
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/petclinicdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=petclinic
       - SPRING_DATASOURCE_PASSWORD=petclinic123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQL8Dialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - petclinic-network
+    restart: unless-stopped
 
   mysql:
     image: mysql:8.0
+    container_name: pet-clinic-mysql
     environment:
-      - MYSQL_DATABASE=petclinic
+      - MYSQL_DATABASE=petclinicdb
       - MYSQL_USER=petclinic
       - MYSQL_PASSWORD=petclinic123
-      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_ROOT_PASSWORD=root123
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./scripts/init-mysql.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "3306:3306"
     networks:
       - petclinic-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mysql_data:
+    driver: local
 
 networks:
   petclinic-network:
