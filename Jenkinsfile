@@ -69,7 +69,7 @@ pipeline {
                         docker run -d \
                             --name ${DOCKER_IMAGE} \
                             -p ${APP_PORT}:8081 \
-                            -e SPRING_DATASOURCE_URL=jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true \
+                            -e 'SPRING_DATASOURCE_URL=jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true' \
                             -e SPRING_DATASOURCE_USERNAME=${MYSQL_USER} \
                             -e SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD} \
                             -e SPRING_JPA_HIBERNATE_DDL_AUTO=update \
