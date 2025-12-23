@@ -114,6 +114,19 @@ public class WebController {
         return "redirect:/owners";
     }
 
+    @PostMapping("/owners/{id}/delete")
+    public String deleteOwner(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<Owner> ownerOpt = ownerService.findById(id);
+        if (ownerOpt.isPresent()) {
+            Owner owner = ownerOpt.get();
+            ownerService.delete(id);
+            redirectAttributes.addFlashAttribute("message", "Owner " + owner.getFirstName() + " " + owner.getLastName() + " deleted successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Owner not found!");
+        }
+        return "redirect:/owners";
+    }
+
     /**
      * Pets Management
      */
@@ -165,6 +178,46 @@ public class WebController {
         return "redirect:/pets";
     }
 
+    @GetMapping("/pets/{id}/edit")
+    public String editPetForm(@PathVariable Long id, Model model) {
+        Optional<Pet> petOpt = petService.findById(id);
+        if (petOpt.isPresent()) {
+            model.addAttribute("pet", petOpt.get());
+            model.addAttribute("owners", ownerService.findAll());
+            return "pets/form";
+        }
+        return "redirect:/pets";
+    }
+
+    @PostMapping("/pets/{id}")
+    public String updatePet(@PathVariable Long id, @ModelAttribute Pet pet, RedirectAttributes redirectAttributes) {
+        pet.setId(id);
+        
+        // Fetch the owner object from the database using the owner ID
+        if (pet.getOwner() != null && pet.getOwner().getId() != null) {
+            Owner owner = ownerService.findById(pet.getOwner().getId())
+                    .orElseThrow(() -> new RuntimeException("Owner not found"));
+            pet.setOwner(owner);
+        }
+        
+        Pet updatedPet = petService.save(pet);
+        redirectAttributes.addFlashAttribute("message", "Pet " + updatedPet.getName() + " updated successfully!");
+        return "redirect:/pets";
+    }
+
+    @PostMapping("/pets/{id}/delete")
+    public String deletePet(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<Pet> petOpt = petService.findById(id);
+        if (petOpt.isPresent()) {
+            Pet pet = petOpt.get();
+            petService.delete(id);
+            redirectAttributes.addFlashAttribute("message", "Pet " + pet.getName() + " deleted successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Pet not found!");
+        }
+        return "redirect:/pets";
+    }
+
     /**
      * Consultations Management
      */
@@ -210,6 +263,19 @@ public class WebController {
         if (consultationOpt.isPresent()) {
             model.addAttribute("consultation", consultationOpt.get());
             return "consultations/view";
+        }
+        return "redirect:/consultations";
+    }
+
+    @PostMapping("/consultations/{id}/delete")
+    public String deleteConsultation(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<Consultation> consultationOpt = consultationService.findById(id);
+        if (consultationOpt.isPresent()) {
+            Consultation consultation = consultationOpt.get();
+            consultationService.delete(id);
+            redirectAttributes.addFlashAttribute("message", "Consultation for " + consultation.getPet().getName() + " deleted successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Consultation not found!");
         }
         return "redirect:/consultations";
     }
