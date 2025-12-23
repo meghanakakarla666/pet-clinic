@@ -13,7 +13,7 @@ echo "========================================="
 
 # Configuration
 APP_NAME="pet-clinic"
-GIT_REPO="https://github.com/YOUR-GITHUB-USERNAME/pet-clinic.git"
+GIT_REPO="https://github.com/meghanakakarla666/pet-clinic.git"
 APP_DIR="/opt/petclinic"
 DOCKER_IMAGE="pet-clinic"
 APP_PORT="8081"
