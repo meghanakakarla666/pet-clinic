@@ -2,6 +2,7 @@ pipeline {
     agent any
     
     environment {
+        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${env.PATH}"
         DOCKER_IMAGE = 'pet-clinic'
         DOCKER_TAG = "${BUILD_NUMBER}"
         APP_PORT = '8081'
