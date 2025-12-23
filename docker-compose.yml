@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  pet-clinic:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/petclinic
+      - SPRING_DATASOURCE_USERNAME=petclinic
+      - SPRING_DATASOURCE_PASSWORD=petclinic123
+    depends_on:
+      - mysql
+    networks:
+      - petclinic-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=petclinic
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic123
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - petclinic-network
+
+volumes:
+  mysql_data:
+
+networks:
+  petclinic-network:
+    driver: bridge

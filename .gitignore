@@ -1,0 +1,37 @@
+# Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+app.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Training files
+training-maven-repo/
+training-settings.xml
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Build artifacts
+build/
+dist/
+

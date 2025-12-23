@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Owners - Pet Clinic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links {
+            margin-bottom: 20px;
+        }
+        
+        .nav-links a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 15px;
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            border-radius: 3px;
+        }
+        
+        .nav-links a:hover {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn {
+            background: #28a745;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #218838;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: black;
+        }
+        
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .alert {
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 5px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a th:href="@{/}">🏠 Dashboard</a>
+            <a th:href="@{/owners}">👥 Owners</a>
+            <a th:href="@{/pets}">🐕 Pets</a>
+            <a th:href="@{/consultations}">🏥 Consultations</a>
+        </div>
+        
+        <!-- Flash Messages -->
+        <div th:if="${message}" class="alert">
+            ✅ <span th:text="${message}"></span>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>👥 Pet Owners</h1>
+                <p>Manage pet owner information</p>
+            </div>
+            <a th:href="@{/owners/new}" class="btn">+ Add New Owner</a>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(owners)}" class="empty-state">
+            <h3>No Pet Owners Found</h3>
+            <p>Start by adding your first pet owner to the system</p>
+            <a th:href="@{/owners/new}" class="btn">+ Add First Owner</a>
+        </div>
+
+        <!-- Owners Table -->
+        <div th:if="${!#lists.isEmpty(owners)}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="owner, iterStat : ${owners}">
+                        <td th:text="${iterStat.count}">1</td>
+                        <td>
+                            <strong th:text="${owner.firstName + ' ' + owner.lastName}">John Doe</strong>
+                        </td>
+                        <td th:text="${owner.address}">123 Main St</td>
+                        <td th:text="${owner.city}">New York</td>
+                        <td th:text="${owner.phone ?: 'Not provided'}">+1-555-0123</td>
+                        <td>
+                            <a th:href="@{'/owners/' + ${owner.id}}" class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;">View</a>
+                            <a th:href="@{'/owners/' + ${owner.id} + '/edit'}" class="btn btn-warning" style="padding: 4px 8px; font-size: 12px;">Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 20px; text-align: center;">
+                <p><strong th:text="${#lists.size(owners)}">0</strong> total owners</p>
+                <a th:href="@{/owners/new}" class="btn">+ Add New Owner</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

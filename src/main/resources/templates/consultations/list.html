@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultations - Pet Clinic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links {
+            margin-bottom: 20px;
+        }
+        
+        .nav-links a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 15px;
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            border-radius: 3px;
+        }
+        
+        .nav-links a:hover {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        
+        .search-filters {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-filters input,
+        .search-filters select {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        .consultations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .consultations-table th,
+        .consultations-table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .consultations-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        
+        .consultations-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .consultations-table tr:hover {
+            background: #e9ecef;
+        }
+        
+        .no-consultations {
+            text-align: center;
+            color: #6c757d;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .pet-link,
+        .owner-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .pet-link:hover,
+        .owner-link:hover {
+            text-decoration: underline;
+        }
+        
+        .fee-amount {
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-radius: 5px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .date-column {
+            width: 120px;
+        }
+        
+        .actions-column {
+            width: 80px;
+            text-align: center;
+        }
+        
+        .pet-column {
+            width: 150px;
+        }
+        
+        .owner-column {
+            width: 150px;
+        }
+        
+        .fee-column {
+            width: 100px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a th:href="@{/}">🏠 Dashboard</a>
+            <a th:href="@{/owners}">👥 Owners</a>
+            <a th:href="@{/pets}">🐕 Pets</a>
+            <a th:href="@{/consultations}">🏥 Consultations</a>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>🏥 Consultations</h1>
+                <p>Manage pet consultations and medical records</p>
+            </div>
+            <a th:href="@{/consultations/new}" class="btn btn-success">➕ New Consultation</a>
+        </div>
+
+        <!-- Statistics Bar -->
+        <div class="stats-bar" th:if="${consultations != null and not #lists.isEmpty(consultations)}">
+            <div class="stat-item">
+                <span class="stat-number" th:text="${#lists.size(consultations)}">0</span>
+                <span class="stat-label">Total Consultations</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" th:text="'$' + ${totalRevenue ?: 0}">$0</span>
+                <span class="stat-label">Total Revenue</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" th:text="${uniquePets ?: 0}">0</span>
+                <span class="stat-label">Unique Pets</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" th:text="${recentConsultations ?: 0}">0</span>
+                <span class="stat-label">This Month</span>
+            </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="search-filters">
+            <input type="text" placeholder="🔍 Search by pet name or description..." id="searchInput" style="flex: 1;">
+            <select id="petFilter">
+                <option value="">All Pets</option>
+                <option th:each="pet : ${allPets}" th:value="${pet.id}" th:text="${pet.name}">Pet Name</option>
+            </select>
+            <select id="monthFilter">
+                <option value="">All Months</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+            <button type="button" onclick="clearFilters()" class="btn btn-primary btn-sm">Clear</button>
+        </div>
+
+        <!-- Consultations Table -->
+        <div th:if="${consultations != null and not #lists.isEmpty(consultations)}">
+            <table class="consultations-table" id="consultationsTable">
+                <thead>
+                    <tr>
+                        <th class="date-column">📅 Date</th>
+                        <th class="pet-column">🐕 Pet</th>
+                        <th class="owner-column">👤 Owner</th>
+                        <th>📋 Description</th>
+                        <th class="fee-column">💰 Fee</th>
+                        <th class="actions-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="consultation : ${consultations}">
+                        <td class="date-column" th:text="${#temporals.format(consultation.consultationDate, 'MMM dd, yyyy')}">Date</td>
+                        <td class="pet-column">
+                            <a th:href="@{'/pets/' + ${consultation.pet.id}}" class="pet-link" 
+                               th:text="${consultation.pet.name}">Pet Name</a>
+                            <br>
+                            <small th:text="${consultation.pet.type}" style="color: #6c757d;">Pet Type</small>
+                        </td>
+                        <td class="owner-column">
+                            <a th:href="@{'/owners/' + ${consultation.pet.owner.id}}" class="owner-link"
+                               th:text="${consultation.pet.owner.firstName + ' ' + consultation.pet.owner.lastName}">Owner Name</a>
+                        </td>
+                        <td th:text="${consultation.description}">Description</td>
+                        <td class="fee-column">
+                            <span class="fee-amount" th:text="'$' + ${consultation.fee}">Fee</span>
+                        </td>
+                        <td class="actions-column">
+                            <a th:href="@{'/consultations/' + ${consultation.id}}" class="btn btn-primary btn-sm">View</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- No Consultations Message -->
+        <div th:unless="${consultations != null and not #lists.isEmpty(consultations)}" class="no-consultations">
+            <h3>📝 No Consultations Yet</h3>
+            <p>Start tracking pet consultations and medical records.</p>
+            <a th:href="@{/consultations/new}" class="btn btn-success">🏥 Schedule First Consultation</a>
+        </div>
+    </div>
+
+    <!-- JavaScript for filtering -->
+    <script>
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('petFilter').value = '';
+            document.getElementById('monthFilter').value = '';
+            filterTable();
+        }
+
+        function filterTable() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const petFilter = document.getElementById('petFilter').value;
+            const monthFilter = document.getElementById('monthFilter').value;
+            const table = document.getElementById('consultationsTable');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                const cells = row.getElementsByTagName('td');
+                let showRow = true;
+
+                if (searchValue) {
+                    const petName = cells[1].textContent.toLowerCase();
+                    const description = cells[3].textContent.toLowerCase();
+                    if (!petName.includes(searchValue) && !description.includes(searchValue)) {
+                        showRow = false;
+                    }
+                }
+
+                if (petFilter && showRow) {
+                    const petLink = cells[1].getElementsByTagName('a')[0];
+                    const petId = petLink.href.split('/').pop();
+                    if (petId !== petFilter) {
+                        showRow = false;
+                    }
+                }
+
+                if (monthFilter && showRow) {
+                    const dateText = cells[0].textContent;
+                    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    const monthName = monthNames[parseInt(monthFilter) - 1];
+                    if (!dateText.includes(monthName)) {
+                        showRow = false;
+                    }
+                }
+
+                row.style.display = showRow ? '' : 'none';
+            }
+        }
+
+        // Add event listeners
+        document.getElementById('searchInput').addEventListener('input', filterTable);
+        document.getElementById('petFilter').addEventListener('change', filterTable);
+        document.getElementById('monthFilter').addEventListener('change', filterTable);
+    </script>
+</body>
+</html>
