@@ -4,449 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Clinic - Dr. Shawn's Practice</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 40px 20px;
+            padding-top: 20px;
         }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
+        .main-container {
             background: rgba(255, 255, 255, 0.98);
-            padding: 40px;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
+            padding: 40px;
         }
-        
-        .header {
+        .hero-section {
             text-align: center;
-            padding-bottom: 30px;
-            margin-bottom: 40px;
-            border-bottom: 3px solid transparent;
-            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
-            background-size: 200% auto;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient 3s ease infinite;
+            padding: 30px 0;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 30px;
         }
-        
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .feature-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
         }
-        
-        .header h1 {
-            font-size: 2.8em;
-            margin-bottom: 10px;
-            font-weight: 700;
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
-        
-        .header p {
-            font-size: 1.2em;
-            color: #666;
-            -webkit-text-fill-color: #666;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin: 30px 0;
-        }
-        
-        .stat-card {
-            background: #f0f4f8;
-            color: #495057;
-            padding: 20px 15px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            border: 2px solid #e1e8ed;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-            border-color: #b8c5d1;
-        }
-        
-        .stat-card:nth-child(1) {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-color: #90caf9;
-        }
-        
-        .stat-card:nth-child(2) {
-            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-            border-color: #ce93d8;
-        }
-        
-        .stat-card:nth-child(3) {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            border-color: #a5d6a7;
-        }
-        
-        .stat-number {
-            font-size: 2.2em;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #2c3e50;
-        }
-        
-        .stat-card div:last-child {
-            font-size: 0.9em;
-            font-weight: 500;
-            color: #5a6c7d;
-            letter-spacing: 0.5px;
-        }
-        
-        .navigation {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-        
-        .nav-button {
+        .stats-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 18px 30px;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1.1em;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .nav-button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        .nav-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
-            color: white;
-        }
-        
-        .quick-actions {
-            margin-top: 50px;
-            padding: 40px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .quick-actions h3 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 1.8em;
-            font-weight: 700;
-        }
-        
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-        }
-        
-        .action-button {
-            color: #495057;
-            padding: 25px 20px;
-            text-decoration: none;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            font-weight: 600;
-            font-size: 1em;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .action-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        }
-        
-        .action-button .icon {
-            font-size: 2.8em;
-            margin-bottom: 8px;
-        }
-        
-        .action-button.owner-btn {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-color: #90caf9;
-        }
-        
-        .action-button.pet-btn {
-            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-            border-color: #ce93d8;
-        }
-        
-        .action-button.consultation-btn {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            border-color: #a5d6a7;
-        }
-        
-        .action-button.owner-btn:hover {
-            border-color: #64b5f6;
-            color: #1565c0;
-        }
-        
-        .action-button.pet-btn:hover {
-            border-color: #ba68c8;
-            color: #6a1b9a;
-        }
-        
-        .action-button.consultation-btn:hover {
-            border-color: #81c784;
-            color: #2e7d32;
-        }
-        
-        .recent-section {
-            margin-top: 30px;
-            padding: 25px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        
-        .recent-section h3 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.4em;
-            border-left: 4px solid #667eea;
-            padding-left: 15px;
-        }
-        
-        .recent-section ul {
-            list-style: none;
-        }
-        
-        .recent-section li {
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-        
-        .recent-section li:hover {
-            background: #e9ecef;
-            border-left-color: #667eea;
-            transform: translateX(5px);
-        }
-        
-        .recent-section a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .recent-section a:hover {
-            text-decoration: underline;
-        }
-        
-        .recent-section {
-            margin-top: 40px;
-            padding: 25px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .recent-section h3 {
-            color: #667eea;
-            font-size: 1.5em;
+            padding: 20px;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-        
-        .recent-section ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .recent-section li {
-            padding: 12px;
-            margin-bottom: 10px;
-            background: white;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border-left: 4px solid #667eea;
-        }
-        
-        .recent-section li:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-        }
-        
-        .recent-section strong {
-            color: #333;
-            font-weight: 600;
-        }
-        
-        .recent-section a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-            margin-left: 10px;
-            transition: color 0.3s ease;
-        }
-        
-        .recent-section a:hover {
-            color: #764ba2;
-            text-decoration: underline;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 2px solid #e9ecef;
-            color: #666;
-            font-size: 0.95em;
-        }
-        
-        footer p {
-            margin: 5px 0;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 25px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-            }
-            
-            .navigation {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>🐾 Pet Clinic Management</h1>
-            <p>Dr. Shawn's Practice - Training System</p>
-        </div>
-
-        <!-- Statistics -->
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number" th:text="${ownersCount}">0</div>
-                <div>Pet Owners</div>
+        <div class="main-container">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h1 class="display-4 fw-bold text-primary">
+                    <i class="bi bi-house-heart-fill"></i> Pet Clinic Management
+                </h1>
+                <p class="lead text-muted">Dr. Shawn's Practice - Complete Pet Care Solution</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" th:text="${petsCount}">0</div>
-                <div>Registered Pets</div>
+
+            <!-- Statistics -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="stats-card text-center">
+                        <h3 class="display-6"><span th:text="${totalOwners}">0</span></h3>
+                        <p class="mb-0"><i class="bi bi-people-fill"></i> Total Owners</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card text-center">
+                        <h3 class="display-6"><span th:text="${totalPets}">0</span></h3>
+                        <p class="mb-0"><i class="bi bi-heart-fill"></i> Total Pets</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card text-center">
+                        <h3 class="display-6"><span th:text="${totalConsultations}">0</span></h3>
+                        <p class="mb-0"><i class="bi bi-clipboard2-pulse-fill"></i> Consultations</p>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" th:text="${consultationsCount}">0</div>
-                <div>Consultations</div>
+
+            <!-- Main Features -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="card-title">Manage Owners</h5>
+                            <p class="card-text text-muted">Add, view, and manage pet owners information</p>
+                            <a href="/pet-clinic/owners" class="btn btn-primary w-100">
+                                <i class="bi bi-arrow-right-circle"></i> View Owners
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-heart-fill text-danger" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="card-title">Manage Pets</h5>
+                            <p class="card-text text-muted">Register pets and track their information</p>
+                            <a href="/pet-clinic/pets" class="btn btn-danger w-100">
+                                <i class="bi bi-arrow-right-circle"></i> View Pets
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-clipboard2-pulse-fill text-success" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="card-title">Consultations</h5>
+                            <p class="card-text text-muted">Record consultations and manage fees</p>
+                            <a href="/pet-clinic/consultations" class="btn btn-success w-100">
+                                <i class="bi bi-arrow-right-circle"></i> View Consultations
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-lightning-fill"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <a href="/pet-clinic/owners/new" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-person-plus-fill"></i> Add New Owner
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="/pet-clinic/pets/new" class="btn btn-outline-danger w-100">
+                                <i class="bi bi-plus-circle-fill"></i> Register New Pet
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="/pet-clinic/consultations/new" class="btn btn-outline-success w-100">
+                                <i class="bi bi-file-earmark-plus-fill"></i> New Consultation
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center mt-4 pt-3 border-top">
+                <p class="text-muted mb-0">
+                    <i class="bi bi-c-circle"></i> 2025 Pet Clinic Management System - Dr. Shawn's Practice
+                </p>
+                <p class="text-muted small">Built with Spring Boot, MySQL, Docker & Jenkins</p>
             </div>
         </div>
-
-        <!-- Main Navigation -->
-        <div class="navigation">
-            <a th:href="@{/owners}" class="nav-button">👥 Manage Owners</a>
-            <a th:href="@{/pets}" class="nav-button">🐕 Manage Pets</a>
-            <a th:href="@{/consultations}" class="nav-button">🏥 Consultations</a>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <h3>⚡ Quick Actions</h3>
-            <div class="actions-grid">
-                <a th:href="@{/owners/new}" class="action-button owner-btn">
-                    <div class="icon">👥</div>
-                    <div>Add New Owner</div>
-                </a>
-                <a th:href="@{/pets/new}" class="action-button pet-btn">
-                    <div class="icon">🐾</div>
-                    <div>Register Pet</div>
-                </a>
-                <a th:href="@{/consultations/new}" class="action-button consultation-btn">
-                    <div class="icon">🏥</div>
-                    <div>New Consultation</div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div th:if="${!#lists.isEmpty(recentOwners)}" class="recent-section">
-            <h3>📋 Recent Owners</h3>
-            <ul>
-                <li th:each="owner : ${recentOwners}">
-                    <strong th:text="${owner.firstName + ' ' + owner.lastName}">John Doe</strong>
-                    (<span th:text="${owner.city}">New York</span>)
-                    - <span th:text="${owner.address}">123 Main St</span>
-                    <a th:href="@{'/owners/' + ${owner.id}}">[View Details →]</a>
-                </li>
-            </ul>
-        </div>
-
-        <div th:if="${!#lists.isEmpty(recentPets)}" class="recent-section">
-            <h3>🐾 Recent Pets</h3>
-            <ul>
-                <li th:each="pet : ${recentPets}">
-                    <strong th:text="${pet.name}">Buddy</strong> 
-                    (<span th:text="${pet.type}">DOG</span>)
-                    - <span th:text="${pet.breed}">Golden Retriever</span>
-                    <a th:href="@{'/pets/' + ${pet.id}}">[View Details →]</a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Footer -->
-        <footer>
-            <p><strong>&copy; 2025 Pet Clinic Management System</strong></p>
-            <p>Developed by Bella Solutions for Dr. Shawn's Practice</p>
-        </footer>
     </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
