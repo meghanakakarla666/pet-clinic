@@ -119,7 +119,7 @@ public class WebController {
         Optional<Owner> ownerOpt = ownerService.findById(id);
         if (ownerOpt.isPresent()) {
             Owner owner = ownerOpt.get();
-            ownerService.delete(id);
+            ownerService.deleteById(id);
             redirectAttributes.addFlashAttribute("message", "Owner " + owner.getFirstName() + " " + owner.getLastName() + " deleted successfully!");
         } else {
             redirectAttributes.addFlashAttribute("error", "Owner not found!");
@@ -210,7 +210,7 @@ public class WebController {
         Optional<Pet> petOpt = petService.findById(id);
         if (petOpt.isPresent()) {
             Pet pet = petOpt.get();
-            petService.delete(id);
+            petService.deleteById(id);
             redirectAttributes.addFlashAttribute("message", "Pet " + pet.getName() + " deleted successfully!");
         } else {
             redirectAttributes.addFlashAttribute("error", "Pet not found!");
@@ -272,7 +272,7 @@ public class WebController {
         Optional<Consultation> consultationOpt = consultationService.findById(id);
         if (consultationOpt.isPresent()) {
             Consultation consultation = consultationOpt.get();
-            consultationService.delete(id);
+            consultationService.deleteById(id);
             redirectAttributes.addFlashAttribute("message", "Consultation for " + consultation.getPet().getName() + " deleted successfully!");
         } else {
             redirectAttributes.addFlashAttribute("error", "Consultation not found!");
