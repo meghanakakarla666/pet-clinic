@@ -404,7 +404,7 @@ pet-clinic/
 **Jenkins (AWS):** http://<EC2-IP>:8080  
 **Application (AWS):** http://<EC2-IP>:8081/pet-clinic/  
 
-**Repository:** https://github.com/YOUR_USERNAME/pet-clinic  
+**Repository:** https://github.com/meghanakakarla666/pet-clinic  
 **Build Tool:** Maven 3.x  
 **Java Version:** 11  
 **Spring Boot Version:** 2.7.x  

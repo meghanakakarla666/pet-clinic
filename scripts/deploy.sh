@@ -9,7 +9,7 @@ echo "Starting deployment of Pet Clinic application..."
 
 # Configuration
 APP_NAME="pet-clinic"
-GIT_REPO="https://github.com/yourusername/pet-clinic.git"  # Update with your repo
+GIT_REPO="https://github.com/meghanakakarla666/pet-clinic.git"
 APP_DIR="/opt/petclinic"
 DOCKER_IMAGE="pet-clinic"
 

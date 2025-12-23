@@ -204,7 +204,7 @@ git add .
 git commit -m "Initial commit - Pet Clinic Application"
 
 # Add remote repository
-git remote add origin https://github.com/YOUR_USERNAME/pet-clinic.git
+git remote add origin https://github.com/meghanakakarla666/pet-clinic.git
 
 # Push to GitHub
 git push -u origin main
@@ -293,7 +293,7 @@ Description: GitHub Access
 **General:**
 ```
 ✓ GitHub project
-Project url: https://github.com/YOUR_USERNAME/pet-clinic
+Project url: https://github.com/meghanakakarla666/pet-clinic
 ```
 
 **Build Triggers:**
@@ -305,7 +305,7 @@ Project url: https://github.com/YOUR_USERNAME/pet-clinic
 ```
 Definition: Pipeline script from SCM
 SCM: Git
-Repository URL: https://github.com/YOUR_USERNAME/pet-clinic.git
+Repository URL: https://github.com/meghanakakarla666/pet-clinic.git
 Credentials: github-credentials
 Branch: */main
 Script Path: Jenkinsfile
@@ -324,7 +324,7 @@ Script Path: Jenkinsfile
 ```bash
 # Clone repository
 cd ~
-git clone https://github.com/YOUR_USERNAME/pet-clinic.git
+git clone https://github.com/meghanakakarla666/pet-clinic.git
 cd pet-clinic
 
 # Build with Maven

@@ -63,7 +63,7 @@
    sudo apt update && sudo apt upgrade -y
    
    # Download setup script
-   wget https://raw.githubusercontent.com/YOUR_USERNAME/pet-clinic/main/scripts/ec2-setup.sh
+   wget https://raw.githubusercontent.com/meghanakakarla666/pet-clinic/main/scripts/ec2-setup.sh
    
    # Make executable
    chmod +x ec2-setup.sh
