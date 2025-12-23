@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE = 'pet-clinic'
         DOCKER_TAG = "${BUILD_NUMBER}"
         APP_PORT = '8081'
-        MYSQL_HOST = 'localhost'
+        MYSQL_HOST = 'host.docker.internal'
         MYSQL_DATABASE = 'petclinicdb'
         MYSQL_USER = 'petclinic'
         MYSQL_PASSWORD = 'petclinic123'
